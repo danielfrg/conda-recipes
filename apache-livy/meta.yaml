@@ -26,4 +26,4 @@ requirements:
 
 test:
   commands:
-    - livy-server --help
+    - livy-server status
