@@ -1,0 +1,29 @@
+{%set name = "apache-livy" %}
+{%set version = "0.4.0.60ee047" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/apache/incubator-livy.git
+  git_rev: 60ee047e98b93b50b2763594e9bd17ecc4d31563
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - openjdk
+    - maven
+    - python
+    - scala
+    - r
+  run:
+    - openjdk
+    - python
+    - pyspark
+
+test:
+  commands:
+    - livy-server --help
