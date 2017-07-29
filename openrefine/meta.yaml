@@ -1,0 +1,24 @@
+{%set name = "openrefine" %}
+{%set version = "2.7" %}
+{%set hash_type = "sha256" %}
+{%set hash_val = "c12e32cc39f76f3adf9d1b144a44a844cba41254741dbf7f98888fb95df631b1" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}.tar.gz
+  url: https://github.com/OpenRefine/OpenRefine/releases/download/{{ version }}/openrefine-linux-{{ version }}.tar.gz
+  {{ hash_type }}: {{ hash_val }}
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - python
+    - openjdk
+  run:
+    - python
+    - openjdk
