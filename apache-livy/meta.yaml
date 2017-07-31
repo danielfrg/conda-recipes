@@ -11,6 +11,8 @@ source:
 
 build:
   number: 0
+  noarch: generic
+  skip: true  # [win]
 
 requirements:
   build:
