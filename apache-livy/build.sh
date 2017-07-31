@@ -23,6 +23,10 @@ pushd ${PKG_FULL_HOME_PATH} || exit 1;
 mvn package -pl '!python-api' -DskipTests
 popd || exit 1;
 
+# Build: Create logs directory
+mkdir -vp ${PKG_FULL_HOME_PATH}/logs
+touch ${PKG_FULL_HOME_PATH}/logs/.condakeep
+
 # Build: clean classes directories
 pushd ${PKG_FULL_HOME_PATH} || exit 1;
 find . -name "classes" | xargs rm -rf
