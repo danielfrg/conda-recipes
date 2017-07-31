@@ -2,7 +2,9 @@
 
 PKG_FULL_HOME_PATH="${PREFIX}/share/${PKG_NAME}"
 PKG_FULL_HOME_PATH_VERSION="${PREFIX}/share/${PKG_NAME}-${PKG_VERSION}"
-LAUNCHER="${PREFIX}/bin/livy-server"
+
+PROXY_LAUNCHER_NAME="proxy-launcher"
+PROXY_LAUNCHER="${PKG_FULL_HOME_PATH}/bin/${PROXY_LAUNCHER_NAME}"
 
 mkdir -vp ${PREFIX}/bin;
 mkdir -vp ${PREFIX}/share;
@@ -11,27 +13,33 @@ mkdir -vp ${PKG_FULL_HOME_PATH_VERSION};
 # Move source to /share/apache-livy-{version}
 cp -va ${SRC_DIR}/* ${PKG_FULL_HOME_PATH_VERSION} || exit 1;
 
-# Link /share/apache-livy-version to /share/apache-livy
+# Link /share/apache-livy to /share/apache-livy-version
 pushd ${PREFIX}/share || exit 1;
 ln -sv ${PKG_NAME}-${PKG_VERSION} ${PKG_NAME} || exit  1;
 popd || exit 1;
 
-# Build on /share/apache-livy
+# Build: mvn on /share/apache-livy
 pushd ${PKG_FULL_HOME_PATH} || exit 1;
 mvn package -pl '!python-api' -DskipTests
 popd || exit 1;
 
-# Create /bin/livy-server that launches the one on /share/apache-livy/bin with correct variables
-cat > ${LAUNCHER} <<EOF
+# Build: clean classes directories
+pushd ${PKG_FULL_HOME_PATH} || exit 1;
+find . -name "classes" | xargs rm -rf
+find . -name "test-classes" | xargs rm -rf
+popd || exit 1;
+
+# Create proxy-launcher script that will call the pkg binaries
+# proxy-launcher recives one binary as argument and executes it with the correct variables
+cat > ${PROXY_LAUNCHER} <<EOF
 #!/bin/bash
 
 CWD="\$(cd "\$(dirname "\${0}")" && pwd -P)"
 CMD="\$(basename "\${0}")"
 
+echo -e "Setting up LIVY_HOME to \${LIVY_HOME} ..."
 export LIVY_HOME="\$(cd "\${CWD}/../share/${PKG_NAME}" && pwd -P)"
 
-echo -e ""
-echo -e "Setting up LIVY_HOME to \${LIVY_HOME} ..."
 if [[ -z \${@} ]]; then
     echo -e "Launching \${CMD}"
     echo -e ""
@@ -42,10 +50,15 @@ else
     \${LIVY_HOME}/bin/\${CMD} "\${@}"
 fi
 EOF
-chmod 755 ${LAUNCHER} || exit 1;
+chmod 755 ${PROXY_LAUNCHER} || exit 1;
 
-# clean classes directories
-pushd ${PKG_FULL_HOME_PATH} || exit 1;
-find . -name "classes" | xargs rm -rf
-find . -name "test-classes" | xargs rm -rf
+# Link from `/bin/{pkg-binary}` to `/share/pkg/bin/proxy-launcher {pkg-binary}`
+BIN_ITEM_LIST="$(cd ${PKG_FULL_HOME_PATH}/bin && ls * 2>/dev/null)"
+pushd ${PREFIX}/bin/ || exit 1;
+for item in ${BIN_ITEM_LIST}; do
+    ln -vs ../share/${PKG_NAME}/bin/${PROXY_LAUNCHER_NAME} ${item} || exit 1;
+done
 popd || exit 1;
+
+# Remove proxy-launcher from environment `bin` directory, it will still be on /share/pkg/bin/proxy-launcher
+rm -v ${PREFIX}/bin/${PROXY_LAUNCHER_NAME} || exit 1;
