@@ -1,26 +1,30 @@
+{%set name = "scala" %}
+{%set version = "2.11.8" %}
+{%set hash_type = "sha256" %}
+{%set hash_val = "e7e1f7ddc8873d228d611e801b8d2795" %}
 
 package:
-    name: scala
-    version: 2.11.8
+  name: {{ name }}
+  version: {{ version }}
 
 source:
-    fn: scala-2.11.8.tgz
-    url: http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz
-    md5: e7e1f7ddc8873d228d611e801b8d2795
+  fn: {{ name }}-{{ version }}.tgz
+  url: http://downloads.lightbend.com/scala/{{ version }}/scala-{{ version }}.tgz
+  {{ hash_type }}: {{ hash_val }}
 
 build:
-    number: 0
+  number: 0
 
 requirements:
-    build:
-        - openjdk
-    run:
-        - openjdk
+  build:
+    - openjdk
+  run:
+    - openjdk
 
 test:
-    commands:
-        - scalac -help
+  commands:
+    - scalac -help
 
 about:
-    home: http://www.scala-lang.org/
-    license: 3-clause BSD license
+  home: http://www.scala-lang.org/
+  license: 3-clause BSD license

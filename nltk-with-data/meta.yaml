@@ -12,8 +12,8 @@ source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   {{ hash_type }}: {{ hash_val }}
   patches:
-      # Add conda PREFIX to where NLTK searches for data
-      - data.py.patch
+    # Add conda PREFIX to where NLTK searches for data
+    - data.py.patch
 
 build:
   number: 0
