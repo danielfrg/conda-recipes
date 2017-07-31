@@ -33,5 +33,5 @@ This also helps a lot with debugging failed builds.
 
 The `cache` subdirectories will be shared with the container to cache some things and make some (re)builds faster:
 
-- `conda-pkgs`: `/opt/conda/pkgs`  # This one is not working at the moment :(
+- `conda-pkgs`: `/opt/conda/pkgs`  # This fails with a lot of files so currently disabled
 - `maven`: `~/.m2`
