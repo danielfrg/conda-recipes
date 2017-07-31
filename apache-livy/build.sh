@@ -37,8 +37,8 @@ cat > ${PROXY_LAUNCHER} <<EOF
 CWD="\$(cd "\$(dirname "\${0}")" && pwd -P)"
 CMD="\$(basename "\${0}")"
 
-echo -e "Setting up LIVY_HOME to \${LIVY_HOME} ..."
 export LIVY_HOME="\$(cd "\${CWD}/../share/${PKG_NAME}" && pwd -P)"
+echo -e "Setting up LIVY_HOME to \${LIVY_HOME} ..."
 
 if [[ -z \${@} ]]; then
     echo -e "Launching \${CMD}"
