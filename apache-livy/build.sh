@@ -10,10 +10,10 @@ mkdir -vp ${PREFIX}/bin;
 mkdir -vp ${PREFIX}/share;
 mkdir -vp ${PKG_FULL_HOME_PATH_VERSION};
 
-# Move source to /share/apache-livy-{version}
+# Move source to /share/{pkg}-{version}
 cp -va ${SRC_DIR}/* ${PKG_FULL_HOME_PATH_VERSION} || exit 1;
 
-# Link /share/apache-livy to /share/apache-livy-version
+# Link /share/{pkg} to /share/{pkg}-{version}
 pushd ${PREFIX}/share || exit 1;
 ln -sv ${PKG_NAME}-${PKG_VERSION} ${PKG_NAME} || exit  1;
 popd || exit 1;
