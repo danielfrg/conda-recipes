@@ -26,10 +26,12 @@ Once in the container you can just do:
 conda build <pkg>
 ```
 
-The `conda-bld` directory is shared with the container so output packages are easy to access.
-
 ### Notes
+
+The `conda-bld` directory is shared with the container so output packages are easy to access.
+This also helps a lot with debugging failed builds.
 
 The `cache` subdirectories will be shared with the container to cache some things and make some (re)builds faster:
 
-- maven: `~/.m2`
+- `conda-pkgs`: `/opt/conda/pkgs`  # This one is not working at the moment :(
+- `maven`: `~/.m2`
