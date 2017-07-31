@@ -1,0 +1,30 @@
+{%set name = "apache-zeppelin" %}
+{%set version = "0.7.2" %}
+{%set hash_type = "sha512" %}
+{%set hash_val = "068acacdf00321ddb298cb31b9e676be2e72f2de985e78a95d239bdcf37a85037eacdb24b00b692f5cefe904f18f624648e9eb6cc4cfff67425c442e2a2caa7c" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  fn: zeppelin-{{ version }}-bin-all.tgz
+  url: http://www.apache.org/dyn/closer.cgi/zeppelin/zeppelin-{{ version }}/zeppelin-{{ version }}-bin-all.tgz
+  {{ hash_type }}: {{ hash_val }}
+
+build:
+  number: 0
+  noarch: generic
+
+requirements:
+  build:
+  run:
+    - openjdk
+
+test:
+  commands:
+    - zeppelin.sh -v
+
+about:
+  home: http://zeppelin.apache.org
+  license: Apache 2.0
