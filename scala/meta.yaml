@@ -1,7 +1,7 @@
 {%set name = "scala" %}
 {%set version = "2.11.8" %}
 {%set hash_type = "sha256" %}
-{%set hash_val = "e7e1f7ddc8873d228d611e801b8d2795" %}
+{%set hash_val = "87fc86a19d9725edb5fd9866c5ee9424cdb2cd86b767f1bb7d47313e8e391ace" %}
 
 package:
   name: {{ name }}
