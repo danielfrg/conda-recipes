@@ -1,0 +1,16 @@
+name: Anaconda
+version: 1.0.0
+
+channels:
+  - http://repo.continuum.io/pkgs/free/
+  - http://conda.anaconda.org/conda-forge
+  - http://conda.anaconda.org/danielfrg
+
+specs:
+  - python 3.5*
+  - conda
+  - numpy
+  - scipy
+  - pandas
+  - notebook
+  - apache-livy
