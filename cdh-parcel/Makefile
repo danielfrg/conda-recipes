@@ -19,4 +19,9 @@ validate:
 .PHONY: validate
 
 clean:
+	rm -rf output tmp *.sh
+.PHONY: clean
+
+cleanall:
 	rm -rf cm_ext output tmp *.sh
+.PHONY: cleanall
