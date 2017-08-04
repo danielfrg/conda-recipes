@@ -2,15 +2,19 @@ name: Anaconda
 version: 1.0.0
 
 channels:
-  - http://repo.continuum.io/pkgs/free/
+  - http://repo.continuum.io/pkgs/free
   - http://conda.anaconda.org/conda-forge
   - http://conda.anaconda.org/danielfrg
 
 specs:
   - python 3.5*
   - conda
-  - numpy
-  - scipy
-  - pandas
-  - notebook
+  - anaconda
+  - nltk-with-data
+  - spacy
+  - spacy-en_core_web_sm
+  - spacy-es_core_web_md
   - apache-livy
+
+exclude:
+  - nltk
