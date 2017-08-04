@@ -21,11 +21,11 @@ build:
 requirements:
   build:
     - python
-    - six
     - setuptools
-  run:
     - six
+  run:
     - python
+    - six
 
 test:
   imports:
