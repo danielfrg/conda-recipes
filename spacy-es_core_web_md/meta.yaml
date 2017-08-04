@@ -1,0 +1,39 @@
+{%set name = "es_core_web_md" %}
+{%set version = "1.0.0" %}
+{%set hash_type = "sha256" %}
+{%set hash_val = "dae493ab246943c6392c4428606cfaa3bdd04a32034d94afcbd9480bdb547e46" %}
+
+package:
+  name: spacy-{{ name }}
+  version: {{ version }}
+
+source:
+  fn: spacy-{{ name }}-{{ version }}.tar.gz
+  url: https://github.com/explosion/spacy-models/releases/download/{{ name }}-{{ version }}/{{ name }}-{{ version }}.tar.gz
+  {{ hash_type }}: {{ hash_val }}
+
+build:
+  number: 0
+  noarch: python
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - spacy
+  run:
+    - python
+    - spacy
+
+test:
+  imports:
+    - spacy
+  files:
+    - test_data.py
+  commands:
+    - python test_data.py
+
+about:
+  home: https://spacy.io/
+  license: MIT
+  summary: Industrial-strength Natural Language Processing
