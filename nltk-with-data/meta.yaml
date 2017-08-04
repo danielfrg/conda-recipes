@@ -34,3 +34,8 @@ test:
     - test_data.py
   commands:
     - python test_data.py
+
+about:
+  home: http://nltk.org/
+  license: Apache 2.0
+  summary: Natural Language Toolkit + NLTK data

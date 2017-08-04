@@ -28,3 +28,4 @@ test:
 about:
   home: http://zeppelin.apache.org
   license: Apache 2.0
+  summary: Web-based notebook that enables data-driven, interactive data analytics and collaborative documents with SQL, Scala and more.

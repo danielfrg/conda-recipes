@@ -33,3 +33,4 @@ test:
 about:
   home: http://livy.incubator.apache.org
   license: Apache 2.0
+  summary: An REST Service for Apache Spark
