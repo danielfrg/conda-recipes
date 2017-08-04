@@ -1,7 +1,7 @@
 {%set name = "nltk" %}
-{%set version = "3.2.2" %}
+{%set version = "3.2.4" %}
 {%set hash_type = "sha256" %}
-{%set hash_val = "1b37db344770021c9be3d68f48d1667a8dae6eeff0e502b7bfb01638d288a88e" %}
+{%set hash_val = "8682ae52f5de4f2ba7b77bd78222a38575ad01ef29946214b254dfdf93a3a0eb" %}
 
 package:
   name: {{ name }}-with-data
