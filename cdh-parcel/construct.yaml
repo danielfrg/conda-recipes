@@ -16,6 +16,6 @@ specs:
   - spacy-en_core_web_sm
   - spacy-es_core_web_md
   - apache-livy
-  - apache-zepellin
+  - apache-zeppelin
   - r
   - r-essentials
