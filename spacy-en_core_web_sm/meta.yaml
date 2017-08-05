@@ -21,9 +21,11 @@ requirements:
     - python
     - setuptools
     - spacy
+    - libgcc  # [linux]
   run:
     - python
     - spacy
+    - libgcc  # [linux]
 
 test:
   imports:
