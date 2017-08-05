@@ -16,6 +16,8 @@ specs:
   - spacy-en_core_web_sm
   - spacy-es_core_web_md
   - apache-livy
+  - r
+  - r-essentials
 
 exclude:
   - nltk
