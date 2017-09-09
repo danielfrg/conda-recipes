@@ -1,0 +1,7 @@
+name: anaconda-ambari
+dependencies:
+  - python>=3.5
+  - jinja2
+  - yaml
+  - pyyaml
+  - constructor
