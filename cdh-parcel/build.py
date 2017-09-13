@@ -3,6 +3,7 @@ import re
 import sys
 import json
 import shutil
+from optparse import OptionParser
 from subprocess import check_call
 
 
@@ -56,7 +57,7 @@ def create(path):
 
 def parse_path(path):
     """
-    Get name and version of the Installer
+    Get name and version of the installer
     """
     pat = re.compile(r"([\w.]+)-([\w.]+)-Linux-x86_64\.sh$")
     fn = os.path.basename(path)
@@ -151,8 +152,6 @@ def get_parcel_json(name, version, packages, suffix):
 
 
 if __name__ == "__main__":
-    from optparse import OptionParser
-
     p = OptionParser(
         usage="usage: %prog [options] PATH",
         description="create a parcel from an Anaconda installer (located at "
@@ -163,4 +162,5 @@ if __name__ == "__main__":
     if len(args) != 1:
         p.error("Exactly one argument expected")
 
-    create(args[0])
+    installer_path = args[0]
+    create(installer_path)

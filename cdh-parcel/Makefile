@@ -11,7 +11,7 @@ installer:
 .PHONY: installer
 
 parcel:
-	python parcel.py Anaconda*
+	python build.py *.sh
 .PHONY: parcel
 
 validate:
