@@ -13,3 +13,22 @@ make
 make installer
 make mpack
 ```
+
+## Install
+
+Requires Ambari 2.4 and newer that support the installation of management packs using the `ambari-server install-mpack` command.
+
+Move the `tar.gz` to the Ambari server node, for example using scp:
+
+```
+$ scp -i ~/.ssh/keypair.pem hyperconda-mpack-1.0.0.0.tar.gz centos@ambari-server:.
+```
+
+Install the Anaconda management pack using:
+
+```
+$ ambari-server install-mpack --mpack=anaconda-mpack-1.0.0.0.tar.gz
+
+# Restart amabari-server
+$ ambari-server restart
+```

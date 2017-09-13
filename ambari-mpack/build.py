@@ -1,5 +1,5 @@
 import os
-import yaml
+import re
 import glob
 import shutil
 import subprocess
@@ -8,15 +8,28 @@ from jinja2 import Environment, FileSystemLoader
 
 
 args = {
-    "constructor_version": "4.0.0",  # This has to match the constructor version
+    "name": "Hyperconda",  # This gets replaced on __main__ based on the construtor installer
     "version": "1.0.0.0",  # mpack version
-    "anaconda_service_version": "1.0.0",
+    "constructor_version": "4.0.0",  # This gets replaced on __main__ based on the construtor installer
+    "conda_service_name": "conda",
+    "conda_service_version": "1.0.0",
     "min_ambari_version": "2.4.0.0",
     "hdp_min_version": "2.0.*",
-    "anaconda_dist_ext_version": "4.0.0",
     "min_stack_name": "HDP",
     "min_stack_version": "2.5.*",
 }
+
+
+def parse_path(path):
+    """
+    Get name and version of the installer
+    """
+    pat = re.compile(r"([\w.]+)-([\w.]+)-Linux-x86_64\.sh$")
+    fn = os.path.basename(path)
+    m = pat.match(fn)
+    name = m.group(1)
+    version = m.group(2)
+    return name, version
 
 
 def render_templates(output_dir="./output"):
@@ -31,12 +44,12 @@ def render_templates(output_dir="./output"):
     files = glob.iglob(os.path.join(templates_dir, "**/*"), recursive=True)
     jinja2_env = Environment(loader=FileSystemLoader(templates_dir))
 
+    # Iterate all the files under `templates` and render them
     for fname in list(files):
         template_path = fname[len(templates_dir) + 1:]  # remove `./templates/` prefix
         output_path = os.path.join(output_dir, template_path)
-
         if os.path.isdir(fname):
-            # Create dir in output
+            # Render filename and create dir with that name
             output_path = Environment().from_string(output_path).render(**args)
             os.mkdir(output_path)
         else:
@@ -53,7 +66,7 @@ def copy_constructor(installer_path, output_dir="./output"):
     """
     Move the constructor installer to the output directory under the files on the service
     """
-    target_path = Environment().from_string("anaconda-mpack-{{ version }}/common-services/ANACONDA/{{ anaconda_service_version }}/package/files").render(**args)
+    target_path = Environment().from_string("{{ name }}-mpack-{{ version }}/common-services/{{ conda_service_name | upper }}/{{ conda_service_version }}/package/files").render(**args)
     target_path = os.path.join(output_dir, target_path)
     shutil.copy(installer_path, target_path)
 
@@ -62,8 +75,8 @@ def pkg_extension(output_dir="./output"):
     """
     Pack the output directory into a tar.gz file
     """
-    tar_file = Environment().from_string("anaconda-mpack-{{ version }}.tar.gz").render(**args)
-    target_dir = Environment().from_string("anaconda-mpack-{{ version }}").render(**args)
+    tar_file = Environment().from_string("{{ name | lower }}-mpack-{{ version }}.tar.gz").render(**args)
+    target_dir = Environment().from_string("{{ name }}-mpack-{{ version }}").render(**args)
     process = subprocess.Popen(["tar", "-zcvf", tar_file, target_dir], cwd=output_dir)
     process.wait()
 
@@ -81,9 +94,12 @@ if __name__ == "__main__":
     if len(cli_args) != 1:
         p.error("Exactly one argument expected")
 
-    render_templates(output_dir=output_dir)
-    
     installer_path = cli_args[0]
+
+    name, version = parse_path(installer_path)
+    args['name'] = name
+    args['constructor_version'] = version
+
+    render_templates(output_dir=output_dir)
     copy_constructor(installer_path)
-    
     pkg_extension(output_dir=output_dir)

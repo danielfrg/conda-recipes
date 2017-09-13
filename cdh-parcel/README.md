@@ -22,4 +22,7 @@ make installer
 make parcel
 ```
 
-## Serve the files
+## Installation
+
+The easiest is to move the parcel to the cloudera manager server under the local parcel repository (default: `/opt/cloudera/parcel-repo`).
+[Offical docs](https://www.cloudera.com/documentation/enterprise/latest/topics/cm_ig_create_local_parcel_repo.html#concept_cdc_kbk_mz)
