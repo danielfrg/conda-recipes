@@ -3,11 +3,13 @@ import yaml
 import glob
 import shutil
 import subprocess
+from optparse import OptionParser
 from jinja2 import Environment, FileSystemLoader
 
+
 args = {
-    "version": "1.0.0.0",
-    "constructor_version": "4.0.0",
+    "constructor_version": "4.0.0",  # This has to match the constructor version
+    "version": "1.0.0.0",  # mpack version
     "anaconda_service_version": "1.0.0",
     "min_ambari_version": "2.4.0.0",
     "hdp_min_version": "2.0.*",
@@ -31,7 +33,6 @@ def render_templates(output_dir="./output"):
 
     for fname in list(files):
         template_path = fname[len(templates_dir) + 1:]  # remove `./templates/` prefix
-        print(template_path)
         output_path = os.path.join(output_dir, template_path)
 
         if os.path.isdir(fname):
@@ -48,25 +49,19 @@ def render_templates(output_dir="./output"):
                 fh.write(output_from_parsed_template)
 
 
-def create_constructor(pkgs, output_dir="./output"):
-    constructor_path = Environment().from_string("anaconda-mpack-{{ version }}/common-services/ANACONDA/{{ anaconda_service_version }}/package/files").render(**args)
-    constructor_path = os.path.join(output_dir, constructor_path)
-
-    spec = {
-        "name": "Anaconda",
-        "version": args["constructor_version"],
-        "channels": ["http://repo.continuum.io/pkgs/free/"],
-        "specs": pkgs
-    }
-
-    constructor_yml_file = os.path.join(constructor_path, "construct.yaml")
-    with open(constructor_yml_file, "w") as fh:
-        yaml.safe_dump(spec, fh, default_flow_style=False)
-    process = subprocess.Popen(["constructor", "."], cwd=constructor_path)
-    process.wait()
+def copy_constructor(installer_path, output_dir="./output"):
+    """
+    Move the constructor installer to the output directory under the files on the service
+    """
+    target_path = Environment().from_string("anaconda-mpack-{{ version }}/common-services/ANACONDA/{{ anaconda_service_version }}/package/files").render(**args)
+    target_path = os.path.join(output_dir, target_path)
+    shutil.copy(installer_path, target_path)
 
 
 def pkg_extension(output_dir="./output"):
+    """
+    Pack the output directory into a tar.gz file
+    """
     tar_file = Environment().from_string("anaconda-mpack-{{ version }}.tar.gz").render(**args)
     target_dir = Environment().from_string("anaconda-mpack-{{ version }}").render(**args)
     process = subprocess.Popen(["tar", "-zcvf", tar_file, target_dir], cwd=output_dir)
@@ -75,7 +70,20 @@ def pkg_extension(output_dir="./output"):
 
 if __name__ == "__main__":
     output_dir = "./output"
+
+    p = OptionParser(
+        usage="usage: %prog [options] PATH",
+        description="create a parcel from an Anaconda installer (located at "
+                    "PATH).  The resulting will be placed in the current "
+                    "working directory")
+
+    opts, cli_args = p.parse_args()
+    if len(cli_args) != 1:
+        p.error("Exactly one argument expected")
+
     render_templates(output_dir=output_dir)
-    pkgs = ["python 3.5*", "conda", "numpy", "pandas"]
-    create_constructor(pkgs, output_dir=output_dir)
+    
+    installer_path = cli_args[0]
+    copy_constructor(installer_path)
+    
     pkg_extension(output_dir=output_dir)
