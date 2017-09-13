@@ -1,0 +1,4 @@
+#!/bin/bash
+
+eval `ssh-agent -s`
+jupyter lab --ip 0.0.0.0 --allow-root
