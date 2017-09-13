@@ -1,0 +1,47 @@
+{
+  "type": "full-release",
+  "name": "anaconda-ambari-mpack",
+  "version": "{{ version }}",
+  "description": "Ambari Management Pack for Anaconda",
+  "prerequisites": {
+    "min-ambari-version": "{{ min_ambari_version }}",
+    "min-stack-versions": [
+      {
+        "stack_name": "HDP",
+        "stack_version": "2.3.0"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "name": "anaconda-common-services",
+      "type" : "service-definitions",
+      "source_dir" : "common-services"
+    },
+    {
+      "name" : "anaconda-addon-services",
+      "type" : "stack-addon-service-definitions",
+      "source_dir": "addon-services",
+      "service_versions_map": [
+        {
+          "service_name" : "ANACONDA",
+          "service_version" : "{{ anaconda_service_version }}",
+          "applicable_stacks" : [
+            {
+              "stack_name" : "HDP",
+              "stack_version" : "2.3"
+            },
+            {
+              "stack_name" : "HDP",
+              "stack_version" : "2.4"
+            },
+            {
+              "stack_name" : "HDP",
+              "stack_version" : "2.5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
