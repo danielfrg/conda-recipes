@@ -1,4 +1,4 @@
-# Weird conda-recipes
+# conda recipes and tools
 
 ```
 conda build <pkg>
