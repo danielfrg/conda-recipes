@@ -6,7 +6,7 @@ conda build <pkg>
 
 ## Linux
 
-To get linux packages use the docker container:
+To get linux packages use the docker container. 
 
 Prepare:
 
@@ -27,6 +27,9 @@ conda build <pkg>
 ```
 
 ### Notes
+
+This image is based on [condaforge/linux-anvil](https://github.com/conda-forge/docker-images)
+so packages that build here will probably build on conda-forge.
 
 The `conda-bld` directory is shared with the container so output packages are easy to access.
 This also helps a lot with debugging failed builds.

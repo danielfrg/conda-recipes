@@ -1,9 +1,9 @@
-FROM continuumio/miniconda3:4.3.14
+FROM condaforge/linux-anvil
 
-RUN apt-get update && apt-get install make unzip
+RUN yum install -y make unzip
 
-RUN conda install -y conda-build anaconda-client constructor certifi jinja2
-RUN conda config --add channels conda-forge
+RUN /opt/conda/bin/conda install -y anaconda-client constructor certifi jinja2
+# RUN conda config --add channels conda-forge
 
 ENV CONDA_BLD_PATH /conda-bld
 
