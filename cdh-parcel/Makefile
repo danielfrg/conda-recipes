@@ -1,6 +1,6 @@
 PWD := $(shell pwd)
 
-all: installer parcel
+all: installer parcel manifest
 
 setup:
 	conda install -y openjdk maven; git clone https://github.com/cloudera/cm_ext.git ; cd cm_ext; mvn install
