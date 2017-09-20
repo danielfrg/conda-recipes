@@ -186,5 +186,5 @@ if __name__ == "__main__":
         p.error("Exactly one argument expected")
 
     installer_path = args[0]
-    # create(installer_path)
+    create(installer_path)
     duplicate(installer_path)
