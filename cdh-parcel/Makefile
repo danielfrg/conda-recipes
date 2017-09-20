@@ -18,6 +18,10 @@ validate:
 	java -jar cm_ext/validator/target/validator.jar -f output/Anaconda*
 .PHONY: validate
 
+manifest:
+	python manifest.py
+.PHONY: manifest
+
 clean:
 	rm -rf output tmp *.sh
 .PHONY: clean
