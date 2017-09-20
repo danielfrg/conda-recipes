@@ -164,3 +164,4 @@ if __name__ == "__main__":
 
     installer_path = args[0]
     create(installer_path)
+    copy_parcels()
