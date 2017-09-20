@@ -14,13 +14,13 @@ parcel:
 	python build.py *.sh
 .PHONY: parcel
 
-validate:
-	java -jar cm_ext/validator/target/validator.jar -f output/Anaconda*
-.PHONY: validate
-
 manifest:
 	python manifest.py
 .PHONY: manifest
+
+validate:
+	java -jar cm_ext/validator/target/validator.jar -f output/*.parcel
+.PHONY: validate
 
 clean:
 	rm -rf output tmp *.sh

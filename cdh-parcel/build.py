@@ -9,7 +9,7 @@ from subprocess import check_call
 
 TMP_DIR = os.environ.get("PARCEL_TMP_DIR", "./tmp")
 OUTPUT_DIR = os.environ.get("PARCEL_OUTPUT_DIR", "./output")
-SUFFIX = os.environ.get("PARCEL_SUFFIC", "jessie")
+SUFFIX = os.environ.get("PARCEL_SUFFIX", "el6")
 
 CONDA_ENV_SH = """#!/bin/bash
 if [ -z "${CDH_PYTHON}" ]; then
@@ -97,8 +97,8 @@ def fix_bin_dir(prefix):
 def is_elf(filepath):
     if not os.path.isfile(filepath):
         return False
-    with open(filepath, "rb") as f:
-        head = f.read(4)
+    with open(filepath, "rb") as file:
+        head = file.read(4)
     return head == b"\x7fELF"
 
 
@@ -117,8 +117,8 @@ def fix_shebang(filepath):
         if new_script == script:
             return
         print("Updating shebang on:", filepath)
-        with open(filepath, "w") as f:
-            f.write(new_script)
+        with open(filepath, "w") as file:
+            file.write(new_script)
         os.chmod(filepath, 0o0755)
 
 
@@ -151,6 +151,29 @@ def get_parcel_json(name, version, packages, suffix):
     return _
 
 
+def duplicate(path, symlink=False):
+    """
+    copy/symlink the generated parcel to distros
+    """
+    os.chdir(OUTPUT_DIR)
+
+    name, version = parse_path(path)
+    suffixes = ('el6', 'el7', 'sles11', 'sles12', 'jessie', 'lucid', 'precise', 'trusty','squeeze', 'wheezy')
+    out_parcel_file = "%s-%s-%s.parcel" % (name, version, SUFFIX)
+    # out_parcel_file = os.path.join(OUTPUT_DIR, out_parcel_filename)
+
+    for suffix in suffixes:
+        if suffix != SUFFIX:
+            dst = out_parcel_file.replace('-{}'.format(SUFFIX), '-' + suffix)
+            # dst = os.path.join(OUTPUT_DIR, dst)
+            if symlink:
+                print("Symlink:", out_parcel_file, dst)
+                os.symlink(out_parcel_file, dst)
+            else:
+                print("Copy:", out_parcel_file, dst)
+                shutil.copyfile(out_parcel_file, dst)
+
+
 if __name__ == "__main__":
     p = OptionParser(
         usage="usage: %prog [options] PATH",
@@ -163,5 +186,5 @@ if __name__ == "__main__":
         p.error("Exactly one argument expected")
 
     installer_path = args[0]
-    create(installer_path)
-    copy_parcels()
+    # create(installer_path)
+    duplicate(installer_path)
