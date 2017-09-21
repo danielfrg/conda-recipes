@@ -7,10 +7,10 @@ WORKDIR=./tmp
 OUTPUTDIR=./output
 
 echo "Patching installation ..."
-# $WORKDIR/bin/python patch.py $WORKDIR
+$WORKDIR/bin/python patch.py $WORKDIR
 
 echo "Writing metadata ..."
-# $WORKDIR/bin/python metadata.py $NAME $VERSION $SUFFIX $WORKDIR
+$WORKDIR/bin/python metadata.py $NAME $VERSION $SUFFIX $WORKDIR
 
 echo "Writing parcel ..."
 mkdir -vp $OUTPUTDIR

@@ -3,6 +3,8 @@ VERSION := 1.0.0
 SUFFIX := el6
 WORKDIR := ./tmp
 OUTPUTDIR := ./output
+INSTALLER := miniconda.sh
+INSTALLER_URL := https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh
 
 all: installer parcel manifest
 
@@ -27,9 +29,9 @@ validate:
 .PHONY: validate
 
 clean:
-	rm -rf output tmp
+	rm -rf output tmp $(INSTALLER)
 .PHONY: clean
 
 cleanall:
-	rm -rf cm_ext output tmp
+	rm -rf cm_ext output tmp $(INSTALLER)
 .PHONY: cleanall

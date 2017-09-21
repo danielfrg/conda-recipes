@@ -13,6 +13,7 @@ def duplicate(name, version, output_dir, suffix='el6', symlink=False):
     """
     copy/symlink the generated parcel to distros
     """
+    cwd_ = os.getcwd()
     os.chdir(output_dir)
     suffixes = ('el6', 'el7', 'sles11', 'sles12', 'jessie', 'lucid', 'precise', 'trusty','squeeze', 'wheezy')
     out_parcel_file = "%s-%s-%s.parcel" % (name, version, suffix)
@@ -26,7 +27,7 @@ def duplicate(name, version, output_dir, suffix='el6', symlink=False):
             else:
                 print("Copy:", out_parcel_file, dst)
                 shutil.copyfile(out_parcel_file, dst)
-
+    os.chdir(cwd_)
 
 
 def _get_parcel_dirname(parcel_name):
