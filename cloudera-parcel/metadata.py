@@ -10,7 +10,23 @@ from subprocess import check_call
 CONDA_ENV_SH = """#!/bin/bash
 
 if [ -z "${CDH_PYTHON}" ]; then
-export CDH_PYTHON=${PARCELS_ROOT}/${PARCEL_DIRNAME}/bin/python
+  export CDH_PYTHON=${PARCELS_ROOT}/${PARCEL_DIRNAME}/bin/python
+fi
+
+if [ -n "${R_HOME}" ]; then
+  export R_HOME="${PARCELS_ROOT}/${PARCEL_DIRNAME}/lib"
+fi
+
+if [ -n "${RHOME}" ]; then
+  export RHOME="${PARCELS_ROOT}/${PARCEL_DIRNAME}/lib/conda-R"
+fi
+
+if [ -n "${R_SHARE_DIR}" ]; then
+  export R_SHARE_DIR="${PARCELS_ROOT}/${PARCEL_DIRNAME}/lib/R/share"
+fi
+
+if [ -n "${R_INCLUDE_DIR}" ]; then
+  export R_INCLUDE_DIR="${PARCELS_ROOT}/${PARCEL_DIRNAME}/lib/R/include"
 fi
 """
 
