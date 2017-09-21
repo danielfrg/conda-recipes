@@ -15,7 +15,7 @@ fi
 """
 
 
-def metadata(name, version, suffix, prefix):
+def metadata(name, version, os_version, prefix):
     # $PREFIX/meta
     meta_dir = os.path.join(prefix, "meta")
     if not os.path.exists(meta_dir):
@@ -23,7 +23,7 @@ def metadata(name, version, suffix, prefix):
     
     # Write parcel.json
     packages = get_package_list(prefix)
-    data = get_parcel_json(name, version, packages, suffix)
+    data = get_parcel_json(name, version, packages, os_version)
     with open(os.path.join(meta_dir, "parcel.json"), "w") as f:
         json.dump(data, f, indent=4, sort_keys=True)
 
@@ -50,7 +50,7 @@ def get_package_list(prefix):
     return packages
 
 
-def get_parcel_json(name, version, packages, suffix):
+def get_parcel_json(name, version, packages, os_version):
     _ = {
         "schema_version": 1,
         "name": name,
@@ -64,7 +64,7 @@ def get_parcel_json(name, version, packages, suffix):
         "packages": packages,
         "setActiveSymlink": True,
         "extraVersionInfo": {
-            # "fullVersion":"%s-%s" % (version, suffix),
+            # "fullVersion":"%s-%s" % (version, os_version),
             "baseVersion": version,
             "patchCount": "p0",
         },
@@ -80,7 +80,7 @@ def get_parcel_json(name, version, packages, suffix):
 
 if __name__ == "__main__":
     params = OptionParser(
-        usage="usage: %prog [options] NAME VERSION SUFFIX PREFIX",
+        usage="usage: %prog [options] NAME VERSION OS_VERSION PREFIX",
         description="Create parcel metadata for a conda installation")
 
     opts, args = params.parse_args()
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     name = args[0]
     version = args[1]
-    suffix = args[2]
+    os_version = args[2]
     prefix = args[3]
     
-    metadata(name, version, suffix, prefix)
+    metadata(name, version, os_version, prefix)

@@ -9,18 +9,18 @@ import posixpath
 from optparse import OptionParser
 
 
-def duplicate(name, version, output_dir, suffix='el6', symlink=False):
+def duplicate(name, version, output_dir, os_version='el6', symlink=False):
     """
     copy/symlink the generated parcel to distros
     """
     cwd_ = os.getcwd()
     os.chdir(output_dir)
-    suffixes = ('el6', 'el7', 'sles11', 'sles12', 'jessie', 'lucid', 'precise', 'trusty','squeeze', 'wheezy')
-    out_parcel_file = "%s-%s-%s.parcel" % (name, version, suffix)
+    os_versions = ('el6', 'el7', 'sles11', 'sles12', 'jessie', 'lucid', 'precise', 'trusty','squeeze', 'wheezy')
+    out_parcel_file = "%s-%s-%s.parcel" % (name, version, os_version)
 
-    for new_suffix in suffixes:
-        if new_suffix != suffix:
-            dst = out_parcel_file.replace('-{}'.format(suffix), '-' + new_suffix)
+    for new_os_version in os_versions:
+        if new_os_version != os_version:
+            dst = out_parcel_file.replace('-{}'.format(os_version), '-' + new_os_version)
             if symlink:
                 print("Symlink:", out_parcel_file, dst)
                 os.symlink(out_parcel_file, dst)
@@ -118,7 +118,7 @@ def write_manifest(data, path):
 
 if __name__ == "__main__":
     params = OptionParser(
-        usage="usage: %prog [options] NAME VERSION SUFFIX OUTPUTDIR",
+        usage="usage: %prog [options] NAME VERSION OS_VERSION OUTPUTDIR",
         description="Create the manifest.json from a directory of parcels")
 
     opts, args = params.parse_args()
@@ -127,9 +127,9 @@ if __name__ == "__main__":
 
     name = args[0]
     version = args[1]
-    suffix = args[2]
+    os_version = args[2]
     output_dir = args[3]
 
-    duplicate(name, version, output_dir, suffix=suffix)
+    duplicate(name, version, output_dir, os_version=os_version)
     manifest = make_manifest(path=output_dir)
     write_manifest(manifest, path=output_dir)
