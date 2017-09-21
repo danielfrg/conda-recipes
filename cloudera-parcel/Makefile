@@ -1,6 +1,6 @@
 NAME := hyperconda
 VERSION := 1.0.0
-SUFFIX := el6
+OS_VERSION := el6
 WORKDIR := ./tmp
 OUTPUTDIR := ./output
 INSTALLER := miniconda.sh
@@ -21,7 +21,7 @@ parcel:
 .PHONY: parcel
 
 manifest:
-	python manifest.py $(NAME) $(VERSION) $(SUFFIX) $(OUTPUTDIR)
+	python manifest.py $(NAME) $(VERSION) $(OS_VERSION) $(OUTPUTDIR)
 .PHONY: manifest
 
 validate:

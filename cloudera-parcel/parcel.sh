@@ -2,16 +2,17 @@
 
 NAME=hyperconda
 VERSION=1.0.0
-SUFFIX=el6
+OS_VERSION=el6
 WORKDIR=./tmp
 OUTPUTDIR=./output
+PREFIX=$WORKDIR/$NAME-$VERSION
 
 echo "Patching installation ..."
-$WORKDIR/bin/python patch.py $WORKDIR
+$PREFIX/bin/python patch.py $PREFIX
 
 echo "Writing metadata ..."
-$WORKDIR/bin/python metadata.py $NAME $VERSION $SUFFIX $WORKDIR
+$PREFIX/bin/python metadata.py $NAME $VERSION $OS_VERSION $PREFIX
 
 echo "Writing parcel ..."
 mkdir -vp $OUTPUTDIR
-cd $WORKDIR && tar czf ../$OUTPUTDIR/$NAME-$VERSION-$SUFFIX.parcel .
+cd $WORKDIR && tar czf ../$OUTPUTDIR/$NAME-$VERSION-$OS_VERSION.parcel $NAME-$VERSION
