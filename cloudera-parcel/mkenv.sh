@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -z "$NAME" ] && NAME=hyperconda;
+[ -z "$NAME" ] && NAME=HYPERCONDA;
 [ -z "$VERSION" ] && VERSION=1.0.0;
 [ -z "$WORKDIR" ] && WORKDIR=./tmp;
 PREFIX=$WORKDIR/$NAME-$VERSION

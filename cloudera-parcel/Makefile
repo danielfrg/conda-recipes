@@ -1,4 +1,4 @@
-NAME := hyperconda
+NAME := HYPERCONDA
 VERSION := 1.0.0
 OS_VERSION := el6
 WORKDIR := ./tmp
