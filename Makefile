@@ -9,9 +9,9 @@ docker-run:
 .PHONY: docker-run
 
 clean:
-	rm -rf conda-bld
+	rm -rf cache/conda-bld
 .PHONY: clean
 
 cleanall:
-	rm -rf cache conda-bld
+	rm -rf cache
 .PHONY: cleanall
