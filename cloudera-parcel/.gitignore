@@ -1,4 +1,4 @@
 cm_ext
-*.sh
+miniconda.sh
 tmp
 output

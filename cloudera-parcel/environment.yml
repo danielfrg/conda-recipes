@@ -1,16 +1,13 @@
-name: hyperconda
-version: 4.0.0
+name: root
 
 channels:
   - http://repo.continuum.io/pkgs/free
-  - http://conda.anaconda.org/conda-forge
+  - http://conda.anaconda.org/conda-forge/linux-64
   - http://conda.anaconda.org/danielfrg
 
-specs:
-  - python 3.5*
-  # - conda
+dependencies:
   # - anaconda
-  # - pyspark
+  - pyspark
   # - nltk-with-data
   # - spacy
   # - spacy-en_core_web_sm

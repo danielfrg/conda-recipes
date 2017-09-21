@@ -2,13 +2,31 @@ import os
 import re
 import time
 import json
+import shutil
 import tarfile
 import hashlib
 import posixpath
 from optparse import OptionParser
 
 
-OUTPUT_DIR = os.environ.get("PARCEL_OUTPUT_DIR", "./output")
+def duplicate(name, version, output_dir, suffix='el6', symlink=False):
+    """
+    copy/symlink the generated parcel to distros
+    """
+    os.chdir(output_dir)
+    suffixes = ('el6', 'el7', 'sles11', 'sles12', 'jessie', 'lucid', 'precise', 'trusty','squeeze', 'wheezy')
+    out_parcel_file = "%s-%s-%s.parcel" % (name, version, suffix)
+
+    for new_suffix in suffixes:
+        if new_suffix != suffix:
+            dst = out_parcel_file.replace('-{}'.format(suffix), '-' + new_suffix)
+            if symlink:
+                print("Symlink:", out_parcel_file, dst)
+                os.symlink(out_parcel_file, dst)
+            else:
+                print("Copy:", out_parcel_file, dst)
+                shutil.copyfile(out_parcel_file, dst)
+
 
 
 def _get_parcel_dirname(parcel_name):
@@ -89,7 +107,7 @@ def make_manifest(path, timestamp=time.time()):
     return manifest
 
 
-def write_parcel(data, path):
+def write_manifest(data, path):
     content = json.dumps(data, indent=4, separators=(',', ': '), sort_keys=True)
 
     fpath = os.path.join(path, 'manifest.json')
@@ -98,9 +116,19 @@ def write_parcel(data, path):
 
 
 if __name__ == "__main__":
-    p = OptionParser(
-        usage="usage: %prog [options]",
+    params = OptionParser(
+        usage="usage: %prog [options] NAME VERSION SUFFIX OUTPUTDIR",
         description="Create the manifest.json from a directory of parcels")
 
-    manifest = make_manifest(path=OUTPUT_DIR)
-    write_parcel(manifest, path=OUTPUT_DIR)
+    opts, args = params.parse_args()
+    if len(args) != 4:
+        params.error("Exactly 4 argument expected")
+
+    name = args[0]
+    version = args[1]
+    suffix = args[2]
+    output_dir = args[3]
+
+    duplicate(name, version, output_dir, suffix=suffix)
+    manifest = make_manifest(path=output_dir)
+    write_manifest(manifest, path=output_dir)

@@ -1,4 +1,8 @@
-PWD := $(shell pwd)
+NAME := hyperconda
+VERSION := 1.0.0
+SUFFIX := el6
+WORKDIR := ./tmp
+OUTPUTDIR := ./output
 
 all: installer parcel manifest
 
@@ -7,15 +11,15 @@ setup:
 .PHONY: setup
 
 installer:
-	constructor .
+	bash installer.sh
 .PHONY: installer
 
 parcel:
-	python build.py *.sh
+	bash parcel.sh
 .PHONY: parcel
 
 manifest:
-	python manifest.py
+	python manifest.py $(NAME) $(VERSION) $(SUFFIX) $(OUTPUTDIR)
 .PHONY: manifest
 
 validate:
@@ -23,9 +27,9 @@ validate:
 .PHONY: validate
 
 clean:
-	rm -rf output tmp *.sh
+	rm -rf output tmp
 .PHONY: clean
 
 cleanall:
-	rm -rf cm_ext output tmp *.sh
+	rm -rf cm_ext output tmp
 .PHONY: cleanall
